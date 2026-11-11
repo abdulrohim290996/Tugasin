@@ -37,6 +37,9 @@ yarn-error.*
 # Amazon Q rules
 .amazonq/
 
+# MCP config (berisi token rahasia)
+.mcp.json
+
 # typescript
 *.tsbuildinfo
 
