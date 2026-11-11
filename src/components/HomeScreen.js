@@ -1,28 +1,17 @@
 import React, { useState } from 'react';
 import {
   View, Text, FlatList, TextInput, TouchableOpacity,
-  StyleSheet, SafeAreaView, StatusBar, ActivityIndicator, Alert, Platform,
+  StyleSheet, SafeAreaView, StatusBar, ActivityIndicator,
 } from 'react-native';
-
-const confirmAlert = (title, message, onConfirm) => {
-  if (Platform.OS === 'web') {
-    if (window.confirm(`${title}\n${message}`)) onConfirm();
-  } else {
-    Alert.alert(title, message, [
-      { text: 'Batal', style: 'cancel' },
-      { text: 'Ya', style: 'destructive', onPress: onConfirm },
-    ]);
-  }
-};
 import { Ionicons } from '@expo/vector-icons';
 import { useTasks } from '../hooks/useTasks';
 import TaskCard from './TaskCard';
 import TaskSummary from './TaskSummary';
 import AddTaskModal from './AddTaskModal';
+import ConfirmModal from './ConfirmModal';
 
 const COLORS = {
   primary: '#4F46E5',
-  primaryLight: '#EEF2FF',
   bg: '#F8FAFC',
   card: '#FFFFFF',
   text: '#1E293B',
@@ -39,6 +28,7 @@ const HomeScreen = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [filter, setFilter] = useState('Semua');
+  const [confirm, setConfirm] = useState({ visible: false, title: '', message: '', onConfirm: null });
 
   const filters = ['Semua', 'Belum Dikerjakan', 'Selesai'];
 
@@ -46,12 +36,26 @@ const HomeScreen = () => {
     ? filteredTasks
     : filteredTasks.filter((t) => t.status === filter);
 
+  const showConfirm = (title, message, onConfirm) =>
+    setConfirm({ visible: true, title, message, onConfirm });
+
+  const hideConfirm = () =>
+    setConfirm({ visible: false, title: '', message: '', onConfirm: null });
+
   const handleDelete = (id) => {
-    confirmAlert('Hapus Tugas', 'Yakin ingin menghapus tugas ini?', () => deleteTask(id));
+    showConfirm(
+      'Hapus Tugas',
+      'Yakin ingin menghapus tugas ini? Tindakan ini tidak dapat dibatalkan.',
+      () => { deleteTask(id); hideConfirm(); }
+    );
   };
 
   const handleReset = () => {
-    confirmAlert('Reset Semua Tugas', 'Semua tugas akan dihapus dan dikembalikan ke data awal.', resetTasks);
+    showConfirm(
+      'Reset Semua Tugas',
+      'Semua tugas akan dihapus dan dikembalikan ke 5 data awal.',
+      () => { resetTasks(); hideConfirm(); }
+    );
   };
 
   if (loading) {
@@ -73,7 +77,6 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>
-            {/* Header */}
             <View style={styles.header}>
               <View>
                 <Text style={styles.greeting}>Halo, Mahasiswa! 👋</Text>
@@ -84,10 +87,8 @@ const HomeScreen = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Summary */}
             <TaskSummary summary={summary} />
 
-            {/* Search */}
             <View style={styles.searchWrap}>
               <Ionicons name="search-outline" size={18} color={COLORS.muted} style={styles.searchIcon} />
               <TextInput
@@ -104,7 +105,6 @@ const HomeScreen = () => {
               )}
             </View>
 
-            {/* Filter Tabs */}
             <View style={styles.filterRow}>
               {filters.map((f) => (
                 <TouchableOpacity
@@ -138,7 +138,6 @@ const HomeScreen = () => {
         }
       />
 
-      {/* FAB */}
       <TouchableOpacity style={styles.fab} onPress={() => setModalVisible(true)}>
         <Ionicons name="add" size={28} color="#fff" />
       </TouchableOpacity>
@@ -148,6 +147,15 @@ const HomeScreen = () => {
         onClose={() => setModalVisible(false)}
         onAdd={addTask}
         nameInputRef={nameInputRef}
+      />
+
+      <ConfirmModal
+        visible={confirm.visible}
+        title={confirm.title}
+        message={confirm.message}
+        onConfirm={confirm.onConfirm}
+        onCancel={hideConfirm}
+        confirmText="Hapus"
       />
     </SafeAreaView>
   );
