@@ -1,0 +1,42 @@
+export const INITIAL_TASKS = [
+  {
+    id: '1',
+    nama_tugas: 'Laporan Praktikum Jaringan',
+    mata_kuliah: 'Jaringan Komputer',
+    deskripsi: 'Buat laporan hasil praktikum konfigurasi router dan switch.',
+    deadline: '2025-07-20',
+    status: 'Belum Dikerjakan',
+  },
+  {
+    id: '2',
+    nama_tugas: 'UTS Algoritma',
+    mata_kuliah: 'Algoritma & Pemrograman',
+    deskripsi: 'Kerjakan soal UTS tentang sorting dan searching algorithm.',
+    deadline: '2025-07-18',
+    status: 'Selesai',
+  },
+  {
+    id: '3',
+    nama_tugas: 'Makalah Basis Data',
+    mata_kuliah: 'Basis Data',
+    deskripsi: 'Tulis makalah tentang normalisasi database hingga 3NF.',
+    deadline: '2025-07-25',
+    status: 'Belum Dikerjakan',
+  },
+  {
+    id: '4',
+    nama_tugas: 'Proyek Mobile App',
+    mata_kuliah: 'Pemrograman Mobile',
+    deskripsi: 'Buat aplikasi React Native dengan fitur CRUD menggunakan Supabase.',
+    deadline: '2025-08-01',
+    status: 'Belum Dikerjakan',
+  },
+  {
+    id: '5',
+    nama_tugas: 'Presentasi Kalkulus',
+    mata_kuliah: 'Kalkulus',
+    deskripsi: 'Presentasikan materi integral tak tentu dan penerapannya.',
+    deadline: '2025-07-15',
+    status: 'Selesai',
+  },
+];
