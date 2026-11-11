@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, Modal, ScrollView, Platform,
+  StyleSheet, Modal, ScrollView, Platform, KeyboardAvoidingView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const COLORS = {
   primary: '#4F46E5',
-  primaryLight: '#EEF2FF',
   success: '#10B981',
   danger: '#EF4444',
   bg: '#F8FAFC',
@@ -58,10 +57,14 @@ const AddTaskModal = ({ visible, onClose, onAdd, nameInputRef }) => {
     </View>
   );
 
-  return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <View style={styles.sheet}>
+  if (!visible) return null;
+
+  // Web: render sebagai overlay div-like, bukan Modal native
+  if (Platform.OS === 'web') {
+    return (
+      <View style={styles.webOverlay}>
+        <TouchableOpacity style={styles.webBackdrop} onPress={onClose} />
+        <View style={styles.webSheet}>
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle}>Tambah Tugas Baru</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
@@ -80,15 +83,49 @@ const AddTaskModal = ({ visible, onClose, onAdd, nameInputRef }) => {
           </ScrollView>
         </View>
       </View>
+    );
+  }
+
+  // Mobile: gunakan Modal native
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
+      <KeyboardAvoidingView
+        style={styles.overlay}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <TouchableOpacity style={styles.backdrop} onPress={onClose} />
+        <View style={styles.sheet}>
+          <View style={styles.sheetHeader}>
+            <Text style={styles.sheetTitle}>Tambah Tugas Baru</Text>
+            <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
+              <Ionicons name="close" size={22} color={COLORS.muted} />
+            </TouchableOpacity>
+          </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Field label="Nama Tugas *" field="nama_tugas" placeholder="Contoh: Laporan Praktikum" />
+            <Field label="Mata Kuliah *" field="mata_kuliah" placeholder="Contoh: Basis Data" />
+            <Field label="Deskripsi" field="deskripsi" placeholder="Deskripsi tugas..." multiline />
+            <Field label="Deadline * (YYYY-MM-DD)" field="deadline" placeholder="2025-08-01" />
+            <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
+              <Ionicons name="add-circle-outline" size={20} color="#fff" />
+              <Text style={styles.submitText}>Tambahkan Tugas</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  // Mobile styles
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
     justifyContent: 'flex-end',
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   sheet: {
     backgroundColor: COLORS.card,
@@ -98,6 +135,32 @@ const styles = StyleSheet.create({
     maxHeight: '90%',
     paddingBottom: Platform.OS === 'ios' ? 40 : 24,
   },
+  // Web styles
+  webOverlay: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+  },
+  webBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  webSheet: {
+    backgroundColor: COLORS.card,
+    borderRadius: 20,
+    padding: 28,
+    width: '100%',
+    maxWidth: 480,
+    maxHeight: '85%',
+    zIndex: 1000,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 24,
+  },
+  // Shared styles
   sheetHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -117,6 +180,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.text,
     backgroundColor: COLORS.bg,
+    outlineStyle: 'none',
   },
   inputMulti: { height: 80, textAlignVertical: 'top' },
   inputError: { borderColor: COLORS.danger },

@@ -3,6 +3,17 @@ import {
   View, Text, FlatList, TextInput, TouchableOpacity,
   StyleSheet, SafeAreaView, StatusBar, ActivityIndicator, Alert, Platform,
 } from 'react-native';
+
+const confirmAlert = (title, message, onConfirm) => {
+  if (Platform.OS === 'web') {
+    if (window.confirm(`${title}\n${message}`)) onConfirm();
+  } else {
+    Alert.alert(title, message, [
+      { text: 'Batal', style: 'cancel' },
+      { text: 'Ya', style: 'destructive', onPress: onConfirm },
+    ]);
+  }
+};
 import { Ionicons } from '@expo/vector-icons';
 import { useTasks } from '../hooks/useTasks';
 import TaskCard from './TaskCard';
@@ -36,17 +47,11 @@ const HomeScreen = () => {
     : filteredTasks.filter((t) => t.status === filter);
 
   const handleDelete = (id) => {
-    Alert.alert('Hapus Tugas', 'Yakin ingin menghapus tugas ini?', [
-      { text: 'Batal', style: 'cancel' },
-      { text: 'Hapus', style: 'destructive', onPress: () => deleteTask(id) },
-    ]);
+    confirmAlert('Hapus Tugas', 'Yakin ingin menghapus tugas ini?', () => deleteTask(id));
   };
 
   const handleReset = () => {
-    Alert.alert('Reset Semua Tugas', 'Semua tugas akan dihapus dan dikembalikan ke data awal.', [
-      { text: 'Batal', style: 'cancel' },
-      { text: 'Reset', style: 'destructive', onPress: resetTasks },
-    ]);
+    confirmAlert('Reset Semua Tugas', 'Semua tugas akan dihapus dan dikembalikan ke data awal.', resetTasks);
   };
 
   if (loading) {
