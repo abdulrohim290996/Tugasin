@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
@@ -105,9 +104,9 @@ const styles = StyleSheet.create({
   badgePending: { backgroundColor: COLORS.warning },
   badgeDone: { backgroundColor: COLORS.success },
   badgeOverdue: { backgroundColor: COLORS.danger },
-  badgeText: { color: '#fff', fontSize: 11, fontWeight: '600' },
-  actions: { flexDirection: 'row', gap: 4 },
-  actionBtn: { padding: 4 },
+  badgeText: { color: '#fff', fontSize: 11, fontWeight: '600', marginLeft: 4 },
+  actions: { flexDirection: 'row' },
+  actionBtn: { padding: 4, marginLeft: 4 },
   taskName: {
     fontSize: 16,
     fontWeight: '700',
@@ -121,13 +120,12 @@ const styles = StyleSheet.create({
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
     marginBottom: 6,
   },
-  metaText: { fontSize: 13, color: COLORS.primary, fontWeight: '500' },
+  metaText: { fontSize: 13, color: COLORS.primary, fontWeight: '500', marginLeft: 4 },
   desc: { fontSize: 13, color: COLORS.muted, marginBottom: 8, lineHeight: 18 },
-  footer: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  deadline: { fontSize: 12, color: COLORS.muted },
+  footer: { flexDirection: 'row', alignItems: 'center' },
+  deadline: { fontSize: 12, color: COLORS.muted, marginLeft: 4 },
   deadlineOverdue: { color: COLORS.danger, fontWeight: '600' },
 });
 

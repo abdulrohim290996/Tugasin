@@ -128,11 +128,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
     marginTop: 8,
     marginBottom: 8,
   },
-  submitText: { color: '#fff', fontSize: 15, fontWeight: '700' },
+  submitText: { color: '#fff', fontSize: 15, fontWeight: '700', marginLeft: 8 },
 });
 
 export default AddTaskModal;

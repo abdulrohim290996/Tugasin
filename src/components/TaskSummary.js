@@ -32,7 +32,6 @@ const TaskSummary = ({ summary }) => (
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    gap: 10,
     marginBottom: 16,
   },
   card: {
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
     padding: 14,
     alignItems: 'center',
     borderTopWidth: 3,
+    marginHorizontal: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,

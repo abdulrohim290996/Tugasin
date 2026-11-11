@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, FlatList, TextInput, TouchableOpacity,
-  StyleSheet, SafeAreaView, StatusBar, ActivityIndicator, Alert,
+  StyleSheet, SafeAreaView, StatusBar, ActivityIndicator, Alert, Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTasks } from '../hooks/useTasks';
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.bg },
   loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.bg },
   loadingText: { marginTop: 12, color: COLORS.muted, fontSize: 14 },
-  list: { padding: 16, paddingBottom: 100 },
+  list: { padding: 16, paddingBottom: 100, maxWidth: 720, width: '100%', alignSelf: 'center' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -179,11 +179,10 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     borderWidth: 1.5,
     borderColor: COLORS.border,
-    gap: 8,
   },
-  searchIcon: { marginRight: 2 },
-  searchInput: { flex: 1, fontSize: 14, color: COLORS.text },
-  filterRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
+  searchIcon: { marginRight: 8 },
+  searchInput: { flex: 1, fontSize: 14, color: COLORS.text, outlineStyle: 'none' },
+  filterRow: { flexDirection: 'row', marginBottom: 16, flexWrap: 'wrap' },
   filterTab: {
     paddingHorizontal: 14,
     paddingVertical: 7,
@@ -191,6 +190,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.card,
     borderWidth: 1.5,
     borderColor: COLORS.border,
+    marginRight: 8,
+    marginBottom: 8,
   },
   filterTabActive: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
   filterText: { fontSize: 12, color: COLORS.muted, fontWeight: '600' },
