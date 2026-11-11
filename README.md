@@ -4,6 +4,14 @@ Aplikasi mobile & web untuk membantu mahasiswa mencatat, mengelola, mencari, dan
 
 ---
 
+## 📸 Screenshots
+
+| Halaman Utama | Tambah Tugas | Filter & Pencarian |
+|---|---|---|
+| ![Home](assets/screenshots/home.png) | ![Add Task](assets/screenshots/add-task.png) | ![Search](assets/screenshots/search.png) |
+
+---
+
 ## ✨ Fitur Utama
 
 | Fitur | Keterangan |
