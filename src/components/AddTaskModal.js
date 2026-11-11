@@ -16,6 +16,23 @@ const COLORS = {
   border: '#E2E8F0',
 };
 
+const Field = ({ label, field, placeholder, multiline, value, onChange, error, inputRef }) => (
+  <View style={styles.fieldWrap}>
+    <Text style={styles.label}>{label}</Text>
+    <TextInput
+      ref={inputRef}
+      style={[styles.input, multiline && styles.inputMulti, error && styles.inputError]}
+      placeholder={placeholder}
+      placeholderTextColor={COLORS.muted}
+      value={value}
+      onChangeText={onChange}
+      multiline={multiline}
+      numberOfLines={multiline ? 3 : 1}
+    />
+    {error ? <Text style={styles.errorText}>{error}</Text> : null}
+  </View>
+);
+
 const AddTaskModal = ({ visible, onClose, onAdd, nameInputRef }) => {
   const [form, setForm] = useState({
     nama_tugas: '', mata_kuliah: '', deskripsi: '', deadline: '',
@@ -40,22 +57,7 @@ const AddTaskModal = ({ visible, onClose, onAdd, nameInputRef }) => {
     onClose();
   };
 
-  const Field = ({ label, field, placeholder, multiline }) => (
-    <View style={styles.fieldWrap}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        ref={field === 'nama_tugas' ? nameInputRef : null}
-        style={[styles.input, multiline && styles.inputMulti, errors[field] && styles.inputError]}
-        placeholder={placeholder}
-        placeholderTextColor={COLORS.muted}
-        value={form[field]}
-        onChangeText={(v) => setForm((p) => ({ ...p, [field]: v }))}
-        multiline={multiline}
-        numberOfLines={multiline ? 3 : 1}
-      />
-      {errors[field] ? <Text style={styles.errorText}>{errors[field]}</Text> : null}
-    </View>
-  );
+  const setField = (field) => (v) => setForm((p) => ({ ...p, [field]: v }));
 
   if (!visible) return null;
 
@@ -72,10 +74,14 @@ const AddTaskModal = ({ visible, onClose, onAdd, nameInputRef }) => {
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Field label="Nama Tugas *" field="nama_tugas" placeholder="Contoh: Laporan Praktikum" />
-            <Field label="Mata Kuliah *" field="mata_kuliah" placeholder="Contoh: Basis Data" />
-            <Field label="Deskripsi" field="deskripsi" placeholder="Deskripsi tugas..." multiline />
-            <Field label="Deadline * (YYYY-MM-DD)" field="deadline" placeholder="2025-08-01" />
+            <Field label="Nama Tugas *" field="nama_tugas" placeholder="Contoh: Laporan Praktikum"
+              value={form.nama_tugas} onChange={setField('nama_tugas')} error={errors.nama_tugas} inputRef={nameInputRef} />
+            <Field label="Mata Kuliah *" field="mata_kuliah" placeholder="Contoh: Basis Data"
+              value={form.mata_kuliah} onChange={setField('mata_kuliah')} error={errors.mata_kuliah} />
+            <Field label="Deskripsi" field="deskripsi" placeholder="Deskripsi tugas..." multiline
+              value={form.deskripsi} onChange={setField('deskripsi')} error={errors.deskripsi} />
+            <Field label="Deadline * (YYYY-MM-DD)" field="deadline" placeholder="2025-08-01"
+              value={form.deadline} onChange={setField('deadline')} error={errors.deadline} />
             <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
               <Ionicons name="add-circle-outline" size={20} color="#fff" />
               <Text style={styles.submitText}>Tambahkan Tugas</Text>
@@ -102,10 +108,14 @@ const AddTaskModal = ({ visible, onClose, onAdd, nameInputRef }) => {
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Field label="Nama Tugas *" field="nama_tugas" placeholder="Contoh: Laporan Praktikum" />
-            <Field label="Mata Kuliah *" field="mata_kuliah" placeholder="Contoh: Basis Data" />
-            <Field label="Deskripsi" field="deskripsi" placeholder="Deskripsi tugas..." multiline />
-            <Field label="Deadline * (YYYY-MM-DD)" field="deadline" placeholder="2025-08-01" />
+            <Field label="Nama Tugas *" field="nama_tugas" placeholder="Contoh: Laporan Praktikum"
+              value={form.nama_tugas} onChange={setField('nama_tugas')} error={errors.nama_tugas} inputRef={nameInputRef} />
+            <Field label="Mata Kuliah *" field="mata_kuliah" placeholder="Contoh: Basis Data"
+              value={form.mata_kuliah} onChange={setField('mata_kuliah')} error={errors.mata_kuliah} />
+            <Field label="Deskripsi" field="deskripsi" placeholder="Deskripsi tugas..." multiline
+              value={form.deskripsi} onChange={setField('deskripsi')} error={errors.deskripsi} />
+            <Field label="Deadline * (YYYY-MM-DD)" field="deadline" placeholder="2025-08-01"
+              value={form.deadline} onChange={setField('deadline')} error={errors.deadline} />
             <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
               <Ionicons name="add-circle-outline" size={20} color="#fff" />
               <Text style={styles.submitText}>Tambahkan Tugas</Text>
